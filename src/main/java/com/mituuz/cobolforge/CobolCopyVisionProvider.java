@@ -102,17 +102,21 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
             return "Filename cannot be blank.";
         }
 
-        Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(project));
+        final Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(project));
+        final VirtualFile file;
 
         if (files.isEmpty()) {
             return "File not found: " + filename;
-        } else if (files.size() > 1) {
+        } else {
+            file = files.iterator().next();
+        }
+
+        if (files.size() > 1) {
             return "Multiple files found with the same name: " + filename;
         }
 
-        Optional<VirtualFile> file = files.stream().findFirst();
         try {
-            return new String(file.get().contentsToByteArray());
+            return new String(file.contentsToByteArray(), file.getCharset());
         } catch (IOException e) {
             return "Error reading file: " + e.getMessage();
         }
