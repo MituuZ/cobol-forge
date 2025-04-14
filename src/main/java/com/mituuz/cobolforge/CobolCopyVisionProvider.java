@@ -1,5 +1,7 @@
 package com.mituuz.cobolforge;
 
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.mituuz.cobolforge.psi.CobolTypes;
 import com.intellij.codeInsight.codeVision.*;
 import com.intellij.openapi.application.ReadAction;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.*;
 
 public class CobolCopyVisionProvider implements CodeVisionProvider {
@@ -94,25 +97,24 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         return new CodeVisionState.Ready(lenses);
     }
 
-    private String fetchFileContent(@NotNull String filename, Project project) {
-        if (project == null || filename.isBlank()) {
-            return "Invalid project or filename.";
+    public String fetchFileContent(@NotNull String filename, @NotNull Project project) {
+        if (filename.isBlank()) {
+            return "Filename cannot be blank.";
         }
 
-        final VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
-        if (baseDir != null) {
-            VirtualFile copyFile = baseDir.findFileByRelativePath("Cobol/COPY/" + filename);
-            if (copyFile == null || !copyFile.exists()) {
-                return "File not found: " + filename;
-            }
+        Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(project));
 
-            try {
-                return new String(copyFile.contentsToByteArray(), copyFile.getCharset());
-            } catch (Exception e) {
-                return "Error reading file: " + e.getMessage();
-            }
-        } else {
-            throw new IllegalStateException("Base directory for the project could not be guessed.");
+        if (files.isEmpty()) {
+            return "File not found: " + filename;
+        } else if (files.size() > 1) {
+            return "Multiple files found with the same name: " + filename;
+        }
+
+        Optional<VirtualFile> file = files.stream().findFirst();
+        try {
+            return new String(file.get().contentsToByteArray());
+        } catch (IOException e) {
+            return "Error reading file: " + e.getMessage();
         }
     }
 
