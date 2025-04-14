@@ -1,0 +1,7 @@
+CobolFile(0,27)
+  CobolCopyStatementImpl(COPY_STATEMENT)(0,17)
+    PsiElement(CobolTokenType.COPY)('COPY')(0,4)
+    PsiWhiteSpace(' ')(4,5)
+    PsiElement(CobolTokenType.IDENTIFIER)('MY-FILE-001')(5,16)
+    PsiElement(CobolTokenType.DOT)('.')(16,17)
+  PsiComment(CobolTokenType.COMMENT)('\n* COMMENT')(17,27)

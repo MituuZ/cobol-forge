@@ -1,0 +1,20 @@
+{
+    parserClass="com.mituuz.cobolforge.parser.CobolParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Cobol"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.mituuz.cobolforge.psi"
+    psiImplPackage="com.mituuz.cobolforge.psi.impl"
+
+    elementTypeHolderClass="com.mituuz.cobolforge.psi.CobolTypes"
+    elementTypeClass="com.mituuz.cobolforge.psi.CobolElementType"
+    tokenTypeClass="com.mituuz.cobolforge.psi.CobolTokenType"
+}
+
+cobolFile ::= item_*
+
+private item_ ::= (copy_statement | COMMENT | CRLF)
+
+copy_statement ::= COPY IDENTIFIER DOT
