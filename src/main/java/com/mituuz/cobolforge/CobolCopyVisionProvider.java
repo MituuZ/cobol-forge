@@ -1,18 +1,18 @@
 package com.mituuz.cobolforge;
 
+import com.intellij.codeInsight.hints.codeVision.DaemonBoundCodeVisionProvider;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.mituuz.cobolforge.psi.CobolTypes;
 import com.intellij.codeInsight.codeVision.*;
-import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import kotlin.Pair;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,17 +21,12 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.*;
 
-public class CobolCopyVisionProvider implements CodeVisionProvider {
+public class CobolCopyVisionProvider implements DaemonBoundCodeVisionProvider {
     private final Map<String, String> fileContentMap = new FixedSizeMap<>(30);
 
     @Override
     public @NotNull CodeVisionAnchorKind getDefaultAnchor() {
         return CodeVisionAnchorKind.Default;
-    }
-
-    @Override
-    public Object precomputeOnUiThread(@NotNull Editor editor) {
-        return null;
     }
 
     @Override
@@ -50,50 +45,47 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
     }
 
     @Override
-    public @NotNull CodeVisionState computeCodeVision(@NotNull Editor editor, Object uiData) {
+    public @NotNull List<Pair<TextRange, CodeVisionEntry>> computeForEditor(@NotNull Editor editor, @NotNull PsiFile psiFile) {
         Project project = editor.getProject();
         List<kotlin.Pair<TextRange, CodeVisionEntry>> lenses = new ArrayList<>();
 
         if (project == null) {
-            return CodeVisionState.Companion.getREADY_EMPTY();
+            return lenses;
         }
 
-        ReadAction.run(() -> {
-            PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-            var elements = findIdentifiersSafely(psiFile);
+        var elements = findIdentifiersSafely(psiFile);
 
-            for (PsiElement element : elements) {
-                final TextRange textRange = element.getTextRange();
-                final String filename = element.getText();
+        for (PsiElement element : elements) {
+            final TextRange textRange = element.getTextRange();
+            final String filename = element.getText();
 
-                String fileContent = fileContentMap.get(filename);
-                if (fileContent == null) {
-                    fileContent = fetchFileContent(filename, project);
-                    fileContentMap.put(filename, fileContent);
-                }
-
-                if (textRange == null) {
-                    continue;
-                }
-
-                final String tooltip = String.format("""
-                        <html>
-                        <strong>%s</strong>
-                        <pre>%s</pre>
-                        </html>""", filename, fileContent);
-
-
-                lenses.add(new kotlin.Pair<>(textRange, new CobolVisionEntry(
-                        "ProviderId",
-                        null,
-                        element.getText(),
-                        tooltip,
-                        List.of()
-                )));
+            String fileContent = fileContentMap.get(filename);
+            if (fileContent == null) {
+                fileContent = fetchFileContent(filename, project);
+                fileContentMap.put(filename, fileContent);
             }
-        });
 
-        return new CodeVisionState.Ready(lenses);
+            if (textRange == null) {
+                continue;
+            }
+
+            final String tooltip = String.format("""
+                    <html>
+                    <strong>%s</strong>
+                    <pre>%s</pre>
+                    </html>""", filename, fileContent);
+
+
+            lenses.add(new Pair<>(textRange, new CobolVisionEntry(
+                    "ProviderId",
+                    null,
+                    element.getText(),
+                    tooltip,
+                    List.of()
+            )));
+        }
+
+        return lenses;
     }
 
     public String fetchFileContent(@NotNull String filename, @NotNull Project project) {

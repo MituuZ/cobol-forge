@@ -26,7 +26,7 @@
                 language="COBOL"
                 implementationClass="com.mituuz.cobolforge.CobolParserDefinition"/>
 
-        <codeInsight.codeVisionProvider
+        <codeInsight.daemonBoundCodeVisionProvider
                 implementation="com.mituuz.cobolforge.CobolCopyVisionProvider"/>
     </extensions>
 </idea-plugin>
