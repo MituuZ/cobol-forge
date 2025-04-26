@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class CobolCopyVisionProvider implements CodeVisionProvider {
-    private final Map<String, String> fileContentMap = new FixedSizeMap<>(30);
+    private static final List<String> FILE_EXTENSIONS = List.of(".cbl", ".cob", ".cpy", ".cobol", "");
 
     @Override
     public @NotNull CodeVisionAnchorKind getDefaultAnchor() {
@@ -66,11 +66,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
                 final TextRange textRange = element.getTextRange();
                 final String filename = element.getText();
 
-                String fileContent = fileContentMap.get(filename);
-                if (fileContent == null) {
-                    fileContent = fetchFileContent(filename, project);
-                    fileContentMap.put(filename, fileContent);
-                }
+                final String fileContent = fetchFileContent(filename, project);
 
                 if (textRange == null) {
                     continue;
@@ -101,17 +97,25 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
             return "Filename cannot be blank.";
         }
 
-        final Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(filename, GlobalSearchScope.allScope(project));
-        final VirtualFile file;
+        VirtualFile file = null;
 
-        if (files.isEmpty()) {
-            return "File not found: " + filename;
-        } else {
-            file = files.iterator().next();
+        for (String extension : FILE_EXTENSIONS) {
+            Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(
+                    filename + extension,
+                    false,
+                    GlobalSearchScope.allScope(project)
+            );
+            if (!files.isEmpty()) {
+                file = files.iterator().next();
+                if (files.size() > 1) {
+                    return "Multiple files found with name: " + filename + extension;
+                }
+                break;
+            }
         }
 
-        if (files.size() > 1) {
-            return "Multiple files found with the same name: " + filename;
+        if (file == null) {
+            return "File not found: " + filename;
         }
 
         try {
