@@ -28,5 +28,9 @@
 
         <codeInsight.codeVisionProvider
                 implementation="com.mituuz.cobolforge.CobolCopyVisionProvider"/>
+
+        <lang.syntaxHighlighterFactory
+                language="COBOL"
+                implementationClass="com.mituuz.cobolforge.CobolSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>
