@@ -2,14 +2,37 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val currentVersion = "0.1.0"
+val myGroup = "com.mituuz.cobol-forge"
+
+intellijPlatform {
+    buildSearchableOptions = false
+
+    pluginConfiguration {
+        version = currentVersion
+        group = myGroup
+
+        changeNotes = """
+            Initial release
+        """.trimIndent()
+
+        description = """
+            A small COBOL language plugin for IntelliJ.
+            Provides COPY previews by hovering over inlay hints.
+        """.trimIndent()
+
+        ideaVersion {
+            sinceBuild = "242"
+            untilBuild = provider { null }
+        }
+    }
+}
+
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.0.20"
     id("org.jetbrains.intellij.platform") version "2.0.1"
 }
-
-group = "com.mituuz.cobol-forge"
-version = "0.1"
 
 repositories {
     mavenCentral()
@@ -40,26 +63,6 @@ sourceSets {
         }
         kotlin {
             srcDir("src/main/kotlin")
-        }
-    }
-}
-
-intellijPlatform {
-    buildSearchableOptions = false
-
-    pluginConfiguration {
-        changeNotes = """
-            Initial release
-        """.trimIndent()
-
-        description = """
-            A small COBOL language plugin for IntelliJ.
-            Provides COPY previews by hovering over inlay hints.
-        """.trimIndent()
-
-        ideaVersion {
-            sinceBuild = "242"
-            untilBuild = provider { null }
         }
     }
 }
