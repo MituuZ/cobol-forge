@@ -49,11 +49,12 @@ intellijPlatform {
 
     pluginConfiguration {
         changeNotes = """
-            Migrate IntelliJ Platform Gradle Plugin to 2.x
+            Initial release
         """.trimIndent()
 
         description = """
-            Initial version, support Copies
+            A small COBOL language plugin for IntelliJ.
+            Provides COPY previews by hovering over inlay hints.
         """.trimIndent()
 
         ideaVersion {

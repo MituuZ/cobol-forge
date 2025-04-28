@@ -141,34 +141,4 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
                 .filter(element -> element.getNode().getElementType() == CobolTypes.IDENTIFIER)
                 .toList();
     }
-
-    public static class FixedSizeMap<K, V> extends LinkedHashMap<K, V> {
-        private final int maxSize;
-
-        public FixedSizeMap(int maxSize) {
-            super(maxSize, 0.75f, true); // true for access order
-            this.maxSize = maxSize;
-        }
-
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-            return size() > maxSize;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
-
-            FixedSizeMap<?, ?> that = (FixedSizeMap<?, ?>) o;
-            return maxSize == that.maxSize;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + maxSize;
-            return result;
-        }
-    }
 }
