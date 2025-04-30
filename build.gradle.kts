@@ -61,9 +61,6 @@ sourceSets {
         java {
             srcDirs("src/main/java", "src/main/gen")
         }
-        kotlin {
-            srcDir("src/main/kotlin")
-        }
     }
 }
 
