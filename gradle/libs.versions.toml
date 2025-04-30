@@ -1,0 +1,12 @@
+[versions]
+junit5 = "5.12.2"
+kotlin = "2.1.10"
+intellijPlatform = "2.5.0"
+
+[libraries]
+junit5Api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+junit5Engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+
+[plugins]
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+intellijPlatform = { id = "org.jetbrains.intellij.platform", version.ref = "intellijPlatform" }

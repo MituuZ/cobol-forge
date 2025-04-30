@@ -30,8 +30,8 @@ intellijPlatform {
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.0.20"
-    id("org.jetbrains.intellij.platform") version "2.0.1"
+    alias(libs.plugins.kotlinJvm)
+    alias(libs.plugins.intellijPlatform)
 }
 
 repositories {
@@ -45,15 +45,11 @@ repositories {
 dependencies {
     intellijPlatform {
         intellijIdeaCommunity("2024.2.0.1")
-
-        instrumentationTools()
-
         testFramework(TestFrameworkType.Platform)
     }
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    testImplementation(libs.junit5Api)
+    testImplementation(libs.junit5Engine)
 }
 
 sourceSets {
