@@ -50,9 +50,9 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
     }
 
     @Override
-    public @NotNull CodeVisionState computeCodeVision(@NotNull Editor editor, Object uiData) {
-        Project project = editor.getProject();
-        List<kotlin.Pair<TextRange, CodeVisionEntry>> lenses = new ArrayList<>();
+    public @NotNull CodeVisionState computeCodeVision(@NotNull final Editor editor, final Object uiData) {
+        final Project project = editor.getProject();
+        final List<kotlin.Pair<TextRange, CodeVisionEntry>> lenses = new ArrayList<>();
 
         if (project == null) {
             return CodeVisionState.Companion.getREADY_EMPTY();
@@ -60,13 +60,13 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
 
         ReadAction.run(() -> {
             PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-            var elements = findIdentifiersSafely(psiFile);
+            final List<PsiElement> cobolIdentifiers = findIdentifiersSafely(psiFile);
 
-            for (PsiElement element : elements) {
-                final TextRange textRange = element.getTextRange();
-                final String filename = element.getText();
+            for (final PsiElement identifier : cobolIdentifiers) {
+                final TextRange textRange = identifier.getTextRange();
+                final String filename = identifier.getText();
 
-                if (element.getNode().getElementType() != CobolTypes.IDENTIFIER || textRange == null) {
+                if (textRange == null) {
                     continue;
                 }
 
@@ -92,7 +92,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         return new CodeVisionState.Ready(lenses);
     }
 
-    public String fetchFileContent(@NotNull String filename, @NotNull Project project) {
+    public String fetchFileContent(@NotNull final String filename, @NotNull final Project project) {
         if (filename.isBlank()) {
             return "Filename cannot be blank.";
         }
@@ -100,7 +100,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         VirtualFile file = null;
 
         for (String extension : FILE_EXTENSIONS) {
-            Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(
+            final Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(
                     filename + extension,
                     false,
                     GlobalSearchScope.allScope(project)
@@ -136,7 +136,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         }
     }
 
-    public static List<PsiElement> findIdentifiersSafely(PsiFile file) {
+    public static List<PsiElement> findIdentifiersSafely(final PsiFile file) {
         return PsiTreeUtil.collectElementsOfType(file, PsiElement.class).stream()
                 .filter(element -> element.getNode().getElementType() == CobolTypes.IDENTIFIER)
                 .toList();
