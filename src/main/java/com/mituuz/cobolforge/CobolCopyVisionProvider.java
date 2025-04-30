@@ -66,23 +66,23 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
                 final TextRange textRange = element.getTextRange();
                 final String filename = element.getText();
 
-                final String fileContent = fetchFileContent(filename, project);
-
-                if (textRange == null) {
+                if (element.getNode().getElementType() != CobolTypes.IDENTIFIER || textRange == null) {
                     continue;
                 }
+
+                final String fileContent = fetchFileContent(filename, project);
 
                 final String tooltip = String.format("""
                         <html>
                         <strong>%s</strong>
                         <pre>%s</pre>
                         </html>""", filename, fileContent);
-
+                final String inlayText = "Hover to preview: " + filename;
 
                 lenses.add(new kotlin.Pair<>(textRange, new CobolVisionEntry(
                         "ProviderId",
                         null,
-                        element.getText(),
+                        inlayText,
                         tooltip,
                         List.of()
                 )));
