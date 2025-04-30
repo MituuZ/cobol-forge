@@ -13,7 +13,7 @@ intellijPlatform {
         group = myGroup
 
         changeNotes = """
-            Initial release
+            Initial release. Provides highlights and previews for COPY statements.
         """.trimIndent()
 
         description = """
