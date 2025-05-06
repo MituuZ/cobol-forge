@@ -1,0 +1,9 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_6" height="34.6774" width="38.46773" y="-1" x="-2.42338" stroke-width="0" stroke="#000" fill="#bcafaf"/>
+  <text xml:space="preserve" text-anchor="start" font-size="14" id="svg_2" y="21" x="1.5" stroke-width="0" stroke="#000" fill="#000000">COB</text>
+  <path d="m0.23791,0.2379c0.04032,0 0.04032,0 0.08065,0c0.08065,0 0.28247,0.03324 0.40323,0.04032c0.68903,0.04039 0.92402,0.09784 1.29032,0.16129c0.64064,0.11097 3.10574,0.17094 3.62903,0.20161c0.68903,0.04039 3.95259,0.30271 4.15322,0.32258c0.40921,0.04052 2.33871,0.40323 2.45968,0.40323l0.60484,0.16129l0.32258,0.08065" id="svg_3" stroke-width="0" stroke="#000" fill="none"/>
+ </g>
+</svg>
