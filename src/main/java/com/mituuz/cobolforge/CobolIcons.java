@@ -1,9 +1,9 @@
 package com.mituuz.cobolforge;
 
-import com.intellij.icons.AllIcons;
+import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 
 public class CobolIcons {
-    public static final Icon FILE = AllIcons.Expui.Nodes.Folder;
+    public static final Icon FILE = IconLoader.getIcon("cob.svg", CobolIcons.class);
 }
