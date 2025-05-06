@@ -4,6 +4,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val currentVersion = "0.1.0"
 val myGroup = "com.mituuz.cobol-forge"
+version = currentVersion
+group = myGroup
 
 intellijPlatform {
     buildSearchableOptions = false
