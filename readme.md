@@ -7,3 +7,7 @@ Hoverable inlay hints to peek COPY files. Files are looked up from file index an
 `.cbl, .cob, .cpy, .cobol`
 
 Highlights COPY keywords.
+
+## File extensions
+By default, the COBOL file type is registered for: `.cbl, .cob, .cpy, .cobol`.  
+If your project uses different extensions, register them manually in IntelliJ (Settings -> Editor -> File Types).

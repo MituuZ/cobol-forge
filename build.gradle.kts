@@ -16,6 +16,7 @@ intellijPlatform {
 
         changeNotes = """
             - Register standard COBOL extensions (.cbl, .cob, .cpy, .cobol).
+            - Parse COPY keyword case-insensitively.
             - Quick documentation (Ctrl+Q) shows full COPY file contents.
         """.trimIndent()
 
