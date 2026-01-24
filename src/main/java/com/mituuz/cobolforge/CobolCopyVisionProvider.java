@@ -1,14 +1,11 @@
 package com.mituuz.cobolforge;
 
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.mituuz.cobolforge.psi.CobolTypes;
 import com.intellij.codeInsight.codeVision.*;
 import com.intellij.openapi.application.ReadAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -18,12 +15,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CobolCopyVisionProvider implements CodeVisionProvider {
-    private static final List<String> FILE_EXTENSIONS = List.of(".cbl", ".cob", ".cpy", ".cobol", "");
-
     @Override
     public @NotNull CodeVisionAnchorKind getDefaultAnchor() {
         return CodeVisionAnchorKind.Default;
@@ -70,7 +65,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
                     continue;
                 }
 
-                final String fileContent = fetchFileContent(filename, project);
+                final String fileContent = CobolCopyResolver.fetchFileContent(filename, project);
 
                 final String tooltip = String.format("""
                         <html>
@@ -90,39 +85,6 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         });
 
         return new CodeVisionState.Ready(lenses);
-    }
-
-    public String fetchFileContent(@NotNull final String filename, @NotNull final Project project) {
-        if (filename.isBlank()) {
-            return "Filename cannot be blank.";
-        }
-
-        VirtualFile file = null;
-
-        for (String extension : FILE_EXTENSIONS) {
-            final Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(
-                    filename + extension,
-                    false,
-                    GlobalSearchScope.allScope(project)
-            );
-            if (!files.isEmpty()) {
-                file = files.iterator().next();
-                if (files.size() > 1) {
-                    return "Multiple files found with name: " + filename + extension;
-                }
-                break;
-            }
-        }
-
-        if (file == null) {
-            return "File not found: " + filename;
-        }
-
-        try {
-            return new String(file.contentsToByteArray(), file.getCharset());
-        } catch (IOException e) {
-            return "Error reading file: " + e.getMessage();
-        }
     }
 
     private static class CobolVisionEntry extends CodeVisionEntry {

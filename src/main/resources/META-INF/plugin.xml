@@ -20,7 +20,7 @@
                   implementationClass="com.mituuz.cobolforge.CobolFileType"
                   fieldName="INSTANCE"
                   language="COBOL"
-                  extensions="cobol"/>
+                  extensions="cbl;cob;cpy;cobol"/>
 
         <lang.parserDefinition
                 language="COBOL"
@@ -28,6 +28,10 @@
 
         <codeInsight.codeVisionProvider
                 implementation="com.mituuz.cobolforge.CobolCopyVisionProvider"/>
+
+        <lang.documentationProvider
+                language="COBOL"
+                implementationClass="com.mituuz.cobolforge.CobolCopyDocumentationProvider"/>
 
         <lang.syntaxHighlighterFactory
                 language="COBOL"
