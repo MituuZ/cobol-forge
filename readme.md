@@ -11,3 +11,7 @@ Highlights COPY keywords.
 ## File extensions
 By default, the COBOL file type is registered for: `.cbl, .cob, .cpy, .cobol`.  
 If your project uses different extensions, register them manually in IntelliJ (Settings -> Editor -> File Types).
+
+## COPY lookup behavior
+COPY files are resolved by searching the project for `<name>` with the following suffixes: `.cbl, .cob, .cpy, .cobol` and no extension.  
+If your COPY files use other extensions, they may not be found even if the file type is registered.
