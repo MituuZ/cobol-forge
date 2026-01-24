@@ -2,7 +2,7 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val currentVersion = "0.1.0"
+val currentVersion = "0.2.0"
 val myGroup = "com.mituuz.cobol-forge"
 version = currentVersion
 group = myGroup
@@ -15,7 +15,8 @@ intellijPlatform {
         group = myGroup
 
         changeNotes = """
-            Initial release. Provides highlights and previews for COPY statements.
+            - Register standard COBOL extensions (.cbl, .cob, .cpy, .cobol).
+            - Quick documentation (Ctrl+Q) shows full COPY file contents.
         """.trimIndent()
 
         description = """
