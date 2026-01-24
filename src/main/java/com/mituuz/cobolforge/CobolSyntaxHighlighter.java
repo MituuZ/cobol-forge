@@ -10,11 +10,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class CobolSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey COMMENT = TextAttributesKey.createTextAttributesKey("COBOL_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
-    public static final TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("COBOL_IDENTIFIER", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("COBOL_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
+    public static final TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey("COBOL_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
 
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
     private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{IDENTIFIER};
+    private static final TextAttributesKey[] KEYWORD_KEYS = new TextAttributesKey[]{KEYWORD};
 
     @NotNull
     @Override
@@ -29,6 +31,9 @@ public class CobolSyntaxHighlighter extends SyntaxHighlighterBase {
         }
         if (tokenType.equals(CobolTypes.IDENTIFIER)) {
             return IDENTIFIER_KEYS;
+        }
+        if (tokenType.equals(CobolTypes.COPY)) {
+            return KEYWORD_KEYS;
         }
         return EMPTY_KEYS;
     }

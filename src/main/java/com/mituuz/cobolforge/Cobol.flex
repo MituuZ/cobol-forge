@@ -20,7 +20,7 @@ CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 END_OF_LINE_COMMENT=("*")[^\r\n]*
 IDENTIFIER=[a-zA-Z\-äÄöÖåÅ0-9]+
-COPY = "COPY"
+COPY = [cC][oO][pP][yY]
 
 %state WAITING_IDENTIFIER
 
