@@ -26,9 +26,6 @@
                 language="COBOL"
                 implementationClass="com.mituuz.cobolforge.CobolParserDefinition"/>
 
-        <codeInsight.codeVisionProvider
-                implementation="com.mituuz.cobolforge.CobolCopyVisionProvider"/>
-
         <lang.documentationProvider
                 language="COBOL"
                 implementationClass="com.mituuz.cobolforge.CobolCopyDocumentationProvider"/>
