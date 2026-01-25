@@ -1,5 +1,7 @@
 package com.mituuz.cobolforge;
 
+import com.intellij.openapi.util.text.StringUtil;
+import com.mituuz.cobolforge.psi.CobolCopyStatement;
 import com.mituuz.cobolforge.psi.CobolTypes;
 import com.intellij.codeInsight.codeVision.*;
 import com.intellij.openapi.application.ReadAction;
@@ -71,7 +73,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
                         <html>
                         <strong>%s</strong>
                         <pre>%s</pre>
-                        </html>""", filename, fileContent);
+                        </html>""", StringUtil.escapeXmlEntities(filename), StringUtil.escapeXmlEntities(fileContent));
                 final String inlayText = "Hover to preview: " + filename;
 
                 lenses.add(new kotlin.Pair<>(textRange, new CobolVisionEntry(
@@ -99,8 +101,9 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
     }
 
     public static List<PsiElement> findIdentifiersSafely(final PsiFile file) {
-        return PsiTreeUtil.collectElementsOfType(file, PsiElement.class).stream()
-                .filter(element -> element.getNode().getElementType() == CobolTypes.IDENTIFIER)
+        return PsiTreeUtil.collectElementsOfType(file, CobolCopyStatement.class).stream()
+                .map(copyStatement -> PsiTreeUtil.findChildOfType(copyStatement, PsiElement.class))
+                .filter(element -> element != null && element.getNode().getElementType() == CobolTypes.IDENTIFIER)
                 .toList();
     }
 }
