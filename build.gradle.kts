@@ -15,10 +15,13 @@ intellijPlatform {
         group = myGroup
 
         changeNotes = """
-            - Removed hover info; COPY file preview is now shown via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).
-            - Automatically treats all files under a directory named `COBOL` (case-insensitively) as COBOL file type.
-            - Automatically treats these extensions as COBOL files: `.cbl`, `.cob`, `.cpy`, `.cobol`.
-            - Parses `COPY` case-insensitively.
+            <h3>Version $currentVersion</h3>
+            <ul>
+              <li>Removed hover info; COPY file preview is now shown via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).</li>
+              <li>Automatically treats all files under a directory named <code>COBOL</code> (case-insensitively) as COBOL file type.</li>
+              <li>Automatically treats these extensions as COBOL files: <code>.cbl</code>, <code>.cob</code>, <code>.cpy</code>, <code>.cobol</code>.</li>
+              <li>Parses <code>COPY</code> case-insensitively.</li>
+            </ul>
         """.trimIndent()
 
         description = """
