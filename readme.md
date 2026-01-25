@@ -1,18 +1,24 @@
 # COBOL Forge
+
 A minimal IntelliJ plugin providing rudimentary COBOL support.
 
 ## Features
-Hoverable inlay hints to peek COPY files. Files are looked up from the file index and searched with the following extensions: (and no extension)
 
-`.cbl, .cob, .cpy, .cobol`
+- COPY file preview via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).
+- Automatically treats all files under a directory named `cobol` (case-insensitive) as COBOL file type.
+- Automatically treats these extensions as COBOL files: `.cbl`, `.cob`, `.cpy`, `.cobol`.
+- Highlights COPY keywords.
+- Case-insensitive parsing for `COPY`.
 
-Highlights COPY keywords.
-Quick documentation (Ctrl+Q) shows full COPY file contents.
+## File type detection
 
-## File extensions
-By default, the COBOL file type is registered for: `.cbl, .cob, .cpy, .cobol`.  
-If your project uses different extensions, register them manually in IntelliJ (Settings -> Editor -> File Types).
+COBOL is recognized automatically for:
+
+- Any file under a directory named `COBOL`
+- File extensions: `.cbl`, `.cob`, `.cpy`, `.cobol`
 
 ## COPY lookup behavior
-COPY files are resolved by searching the project for `<name>` with the following suffixes: `.cbl, .cob, .cpy, .cobol` and no extension.  
-If your COPY files use other extensions, they may not be found even if the file type is registered.
+
+COPY files are resolved by searching the project for `<name>` with the following suffixes: `.cbl, .cob, .cpy, .cobol`
+and no extension.  
+Matching/parsing of the `COPY` keyword is case-insensitive.

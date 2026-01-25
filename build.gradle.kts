@@ -15,14 +15,15 @@ intellijPlatform {
         group = myGroup
 
         changeNotes = """
-            - Register standard COBOL extensions (.cbl, .cob, .cpy, .cobol).
-            - Parse COPY keyword case-insensitively.
-            - Quick documentation (Ctrl+Q) shows full COPY file contents.
+            - Removed hover info; COPY file preview is now shown via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).
+            - Automatically treats all files under a directory named `COBOL` (case-insensitively) as COBOL file type.
+            - Automatically treats these extensions as COBOL files: `.cbl`, `.cob`, `.cpy`, `.cobol`.
+            - Parses `COPY` case-insensitively.
         """.trimIndent()
 
         description = """
             A small COBOL language plugin for IntelliJ.
-            Provides COPY previews by hovering over inlay hints.
+            Provides COPY previews via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).
         """.trimIndent()
 
         ideaVersion {
