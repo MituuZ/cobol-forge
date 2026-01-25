@@ -1,6 +1,7 @@
 package com.mituuz.cobolforge;
 
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.SyntaxTraverser;
 import com.mituuz.cobolforge.psi.CobolCopyStatement;
 import com.mituuz.cobolforge.psi.CobolTypes;
 import com.intellij.codeInsight.codeVision.*;
@@ -57,9 +58,17 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
 
         ReadAction.run(() -> {
             PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-            final List<PsiElement> cobolIdentifiers = findIdentifiersSafely(psiFile);
+            final List<PsiElement> copyStatements = findCopyStatements(psiFile);
 
-            for (final PsiElement identifier : cobolIdentifiers) {
+            for (final PsiElement copyStatement : copyStatements) {
+                PsiElement identifier = SyntaxTraverser.psiTraverser(copyStatement)
+                        .filter(el -> el.getNode().getElementType() == CobolTypes.IDENTIFIER)
+                        .traverse().first();
+
+                if (identifier == null) {
+                    continue;
+                }
+
                 final TextRange textRange = identifier.getTextRange();
                 final String filename = identifier.getText();
 
@@ -67,20 +76,13 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
                     continue;
                 }
 
-                final String fileContent = CobolCopyResolver.fetchFileContent(filename, project);
-
-                final String tooltip = String.format("""
-                        <html>
-                        <strong>%s</strong>
-                        <pre>%s</pre>
-                        </html>""", StringUtil.escapeXmlEntities(filename), StringUtil.escapeXmlEntities(fileContent));
                 final String inlayText = "Hover to preview: " + filename;
 
                 lenses.add(new kotlin.Pair<>(textRange, new CobolVisionEntry(
                         "ProviderId",
                         null,
                         inlayText,
-                        tooltip,
+                        "",
                         List.of()
                 )));
             }
@@ -100,10 +102,9 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         }
     }
 
-    public static List<PsiElement> findIdentifiersSafely(final PsiFile file) {
-        return PsiTreeUtil.collectElementsOfType(file, CobolCopyStatement.class).stream()
-                .map(copyStatement -> PsiTreeUtil.findChildOfType(copyStatement, PsiElement.class))
-                .filter(element -> element != null && element.getNode().getElementType() == CobolTypes.IDENTIFIER)
+    public static List<PsiElement> findCopyStatements(final PsiFile file) {
+        return PsiTreeUtil.collectElementsOfType(file, PsiElement.class).stream()
+                .filter(element -> element.getNode().getElementType() == CobolTypes.IDENTIFIER)
                 .toList();
     }
 }
