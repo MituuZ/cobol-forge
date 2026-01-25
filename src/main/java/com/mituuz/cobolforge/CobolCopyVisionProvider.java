@@ -61,9 +61,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
             final List<CobolCopyStatement> copyStatements = findCopyStatements(psiFile);
 
             for (final CobolCopyStatement copyStatement : copyStatements) {
-                PsiElement identifier = SyntaxTraverser.psiTraverser(copyStatement)
-                        .filter(el -> el.getNode().getElementType() == CobolTypes.IDENTIFIER)
-                        .traverse().first();
+                final PsiElement identifier = copyStatement.getIdentifier();
 
                 if (identifier == null) {
                     continue;

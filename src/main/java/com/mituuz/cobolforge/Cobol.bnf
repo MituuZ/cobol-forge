@@ -11,10 +11,14 @@
     elementTypeHolderClass="com.mituuz.cobolforge.psi.CobolTypes"
     elementTypeClass="com.mituuz.cobolforge.psi.CobolElementType"
     tokenTypeClass="com.mituuz.cobolforge.psi.CobolTokenType"
+
+    psiImplUtilClass="com.mituuz.cobolforge.psi.impl.CobolPsiImplUtil"
 }
 
 cobolFile ::= item_*
 
 private item_ ::= (copy_statement | COMMENT | CRLF | DOT)
 
-copy_statement ::= COPY IDENTIFIER DOT
+copy_statement ::= COPY IDENTIFIER DOT {
+  methods=[getIdentifier]
+}

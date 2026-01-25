@@ -7,4 +7,6 @@ import com.intellij.psi.PsiElement;
 
 public interface CobolCopyStatement extends PsiElement {
 
+  @Nullable PsiElement getIdentifier();
+
 }

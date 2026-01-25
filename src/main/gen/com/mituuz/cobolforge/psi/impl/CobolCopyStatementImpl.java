@@ -27,4 +27,9 @@ public class CobolCopyStatementImpl extends ASTWrapperPsiElement implements Cobo
     else super.accept(visitor);
   }
 
+  @Override
+  public @Nullable PsiElement getIdentifier() {
+    return CobolPsiImplUtil.getIdentifier(this);
+  }
+
 }
