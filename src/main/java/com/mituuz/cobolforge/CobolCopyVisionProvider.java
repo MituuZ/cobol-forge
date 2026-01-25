@@ -57,33 +57,35 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         }
 
         ReadAction.run(() -> {
-            PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-            final List<CobolCopyStatement> copyStatements = findCopyStatements(psiFile);
+            final PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
 
-            for (final CobolCopyStatement copyStatement : copyStatements) {
-                final PsiElement identifier = copyStatement.getIdentifier();
+            PsiTreeUtil.processElements(psiFile, el -> {
+                if (el instanceof CobolCopyStatement copyStatement) {
+                    final PsiElement identifier = copyStatement.getIdentifier();
 
-                if (identifier == null) {
-                    continue;
+                    if (identifier == null) {
+                        return true;
+                    }
+
+                    final TextRange textRange = identifier.getTextRange();
+                    final String filename = identifier.getText();
+
+                    if (textRange == null) {
+                        return true;
+                    }
+
+                    final String inlayText = "Hover to preview: " + filename;
+
+                    lenses.add(new kotlin.Pair<>(textRange, new CobolVisionEntry(
+                            "ProviderId",
+                            null,
+                            inlayText,
+                            "",
+                            List.of()
+                    )));
                 }
-
-                final TextRange textRange = identifier.getTextRange();
-                final String filename = identifier.getText();
-
-                if (textRange == null) {
-                    continue;
-                }
-
-                final String inlayText = "Hover to preview: " + filename;
-
-                lenses.add(new kotlin.Pair<>(textRange, new CobolVisionEntry(
-                        "ProviderId",
-                        null,
-                        inlayText,
-                        "",
-                        List.of()
-                )));
-            }
+                return true;
+            });
         });
 
         return new CodeVisionState.Ready(lenses);
@@ -98,9 +100,5 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         public @NotNull String toString() {
             return getLongPresentation();
         }
-    }
-
-    public static List<CobolCopyStatement> findCopyStatements(final PsiFile file) {
-        return PsiTreeUtil.collectElementsOfType(file, CobolCopyStatement.class).stream().toList();
     }
 }
