@@ -58,9 +58,9 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
 
         ReadAction.run(() -> {
             PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-            final List<PsiElement> copyStatements = findCopyStatements(psiFile);
+            final List<CobolCopyStatement> copyStatements = findCopyStatements(psiFile);
 
-            for (final PsiElement copyStatement : copyStatements) {
+            for (final CobolCopyStatement copyStatement : copyStatements) {
                 PsiElement identifier = SyntaxTraverser.psiTraverser(copyStatement)
                         .filter(el -> el.getNode().getElementType() == CobolTypes.IDENTIFIER)
                         .traverse().first();
@@ -102,9 +102,7 @@ public class CobolCopyVisionProvider implements CodeVisionProvider {
         }
     }
 
-    public static List<PsiElement> findCopyStatements(final PsiFile file) {
-        return PsiTreeUtil.collectElementsOfType(file, PsiElement.class).stream()
-                .filter(element -> element.getNode().getElementType() == CobolTypes.IDENTIFIER)
-                .toList();
+    public static List<CobolCopyStatement> findCopyStatements(final PsiFile file) {
+        return PsiTreeUtil.collectElementsOfType(file, CobolCopyStatement.class).stream().toList();
     }
 }

@@ -4,7 +4,7 @@ package com.mituuz.cobolforge.psi;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
-import com.mituuz.cobolforge.psi.impl.CobolCopyStatementImpl;
+import com.mituuz.cobolforge.psi.impl.*;
 
 public interface CobolTypes {
 

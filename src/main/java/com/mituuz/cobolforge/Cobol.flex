@@ -36,9 +36,18 @@ COPY = [cC][oO][pP][yY]
 
 <WAITING_IDENTIFIER> "." {
     yybegin(YYINITIAL); return CobolTypes.DOT;
-
 }
+
+<YYINITIAL> "." {
+    yybegin(YYINITIAL); return CobolTypes.DOT;
+}
+
 <WAITING_IDENTIFIER> {WHITE_SPACE}+ {
+    return TokenType.WHITE_SPACE;
+}
+
+<WAITING_IDENTIFIER> [^] {
+    yybegin(YYINITIAL);
     return TokenType.WHITE_SPACE;
 }
 
@@ -46,4 +55,4 @@ COPY = [cC][oO][pP][yY]
 
 ({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+[^]                                                         { return TokenType.WHITE_SPACE; }

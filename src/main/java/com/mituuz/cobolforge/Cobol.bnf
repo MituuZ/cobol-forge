@@ -15,6 +15,6 @@
 
 cobolFile ::= item_*
 
-private item_ ::= (copy_statement | COMMENT | CRLF)
+private item_ ::= (copy_statement | COMMENT | CRLF | DOT)
 
 copy_statement ::= COPY IDENTIFIER DOT
