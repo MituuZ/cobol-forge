@@ -99,10 +99,10 @@ class CobolLexer implements FlexLexer {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\3\0\1\1\2\2\1\3\1\4\1\1\1\5\1\1"+
-    "\1\5\1\6\2\0\1\7";
+    "\1\5\1\6\1\7\2\0\1\10";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[16];
+    int [] result = new int[17];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -128,10 +128,11 @@ class CobolLexer implements FlexLexer {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\14\0\30\0\44\0\60\0\74\0\110\0\44"+
-    "\0\124\0\44\0\140\0\74\0\154\0\170\0\204\0\44";
+    "\0\124\0\44\0\140\0\74\0\154\0\170\0\204\0\220"+
+    "\0\44";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[16];
+    int [] result = new int[17];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -155,14 +156,14 @@ class CobolLexer implements FlexLexer {
 
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\4\2\5\2\6\1\7\1\4\1\10\1\11\3\4"+
-    "\1\12\2\13\2\14\1\12\1\15\1\12\4\15\1\4"+
-    "\4\6\2\4\1\10\4\4\15\0\2\5\2\6\1\7"+
-    "\7\0\4\6\7\0\2\7\1\0\1\7\1\0\7\7"+
-    "\11\0\1\16\3\0\2\13\2\6\15\0\1\15\1\0"+
-    "\4\15\12\0\1\17\14\0\1\20";
+    "\1\12\2\13\2\14\1\12\1\15\1\12\4\15\7\16"+
+    "\1\10\4\16\15\0\2\5\2\6\1\7\7\0\4\6"+
+    "\7\0\2\7\1\0\1\7\1\0\7\7\11\0\1\17"+
+    "\3\0\2\13\2\6\15\0\1\15\1\0\4\15\7\16"+
+    "\1\0\4\16\12\0\1\20\14\0\1\21";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[144];
+    int [] result = new int[156];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -200,11 +201,11 @@ class CobolLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\3\0\1\11\3\1\1\11\1\1\1\11\3\1\2\0"+
+    "\3\0\1\11\3\1\1\11\1\1\1\11\4\1\2\0"+
     "\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[16];
+    int [] result = new int[17];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -529,38 +530,49 @@ class CobolLexer implements FlexLexer {
             { return TokenType.WHITE_SPACE;
             }
           // fall through
-          case 8: break;
-          case 2:
-            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
-            }
-          // fall through
           case 9: break;
-          case 3:
-            { yybegin(YYINITIAL); return CobolTypes.COMMENT;
+          case 2:
+            { yybegin(YYINITIAL);
+  return TokenType.WHITE_SPACE;
             }
           // fall through
           case 10: break;
-          case 4:
-            { yybegin(YYINITIAL); return CobolTypes.DOT;
+          case 3:
+            { yybegin(YYINITIAL);
+  return CobolTypes.COMMENT;
             }
           // fall through
           case 11: break;
+          case 4:
+            { yybegin(YYINITIAL);
+    return CobolTypes.DOT;
+            }
+          // fall through
+          case 12: break;
           case 5:
             { yybegin(YYINITIAL);
     return TokenType.WHITE_SPACE;
             }
           // fall through
-          case 12: break;
-          case 6:
-            { yybegin(WAITING_DOT); return CobolTypes.IDENTIFIER;
-            }
-          // fall through
           case 13: break;
-          case 7:
-            { yybegin(WAITING_IDENTIFIER); return CobolTypes.COPY;
+          case 6:
+            { yybegin(WAITING_DOT);
+    return CobolTypes.IDENTIFIER;
             }
           // fall through
           case 14: break;
+          case 7:
+            { // Consume everything up to (but not including) the dot in one go
+    return TokenType.WHITE_SPACE;
+            }
+          // fall through
+          case 15: break;
+          case 8:
+            { yybegin(WAITING_IDENTIFIER);
+    return CobolTypes.COPY;
+            }
+          // fall through
+          case 16: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }
