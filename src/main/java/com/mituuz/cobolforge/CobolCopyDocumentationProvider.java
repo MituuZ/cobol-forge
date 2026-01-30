@@ -3,6 +3,7 @@ package com.mituuz.cobolforge;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
@@ -11,6 +12,10 @@ import com.mituuz.cobolforge.psi.CobolCopyStatement;
 import com.mituuz.cobolforge.psi.CobolTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CobolCopyDocumentationProvider extends AbstractDocumentationProvider {
 
@@ -50,10 +55,8 @@ public class CobolCopyDocumentationProvider extends AbstractDocumentationProvide
             return null;
         }
 
-        // Always anchor the logic to the COPY statement, regardless of which token was targeted.
         final CobolCopyStatement statement = PsiTreeUtil.getParentOfType(target, CobolCopyStatement.class);
         if (statement == null) {
-            // If we're not inside a COPY statement, don't generate docs.
             return null;
         }
 
@@ -63,11 +66,28 @@ public class CobolCopyDocumentationProvider extends AbstractDocumentationProvide
         }
 
         final String filename = identifier.getText();
-        final String fileContent = CobolCopyResolver.fetchFileContent(filename, target.getProject());
+        List<VirtualFile> files = CobolCopyResolver.fetchFiles(filename, target.getProject());
 
-        final String safeFilename = StringUtil.escapeXmlEntities(filename);
-        final String safeContent = StringUtil.escapeXmlEntities(fileContent);
-        return "<html><body><h3>" + safeFilename + "</h3><pre>" + safeContent + "</pre></body></html>";
+        if (files.isEmpty()) {
+            return "<html><body>File not found: " + StringUtil.escapeXmlEntities(filename) + "</body></html>";
+        }
+
+        StringBuilder sb = new StringBuilder("<html><body>");
+        for (VirtualFile file : files) {
+            String content;
+            try {
+                content = new String(file.contentsToByteArray(), file.getCharset());
+            } catch (IOException e) {
+                content = "Error reading file: " + e.getMessage();
+            }
+            sb.append("<h3>").append(StringUtil.escapeXmlEntities(file.getPath())).append("</h3>");
+            sb.append("<pre>").append(StringUtil.escapeXmlEntities(content)).append("</pre>");
+            if (files.size() > 1) {
+                sb.append("<hr/>");
+            }
+        }
+        sb.append("</body></html>");
+        return sb.toString();
     }
 
     private static boolean isCopyToken(@NotNull PsiElement element) {
