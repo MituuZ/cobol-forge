@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CobolCopyDocumentationProvider extends AbstractDocumentationProvider {
 
