@@ -58,6 +58,7 @@ dependencies {
 
     testImplementation(libs.junit5Api)
     testImplementation(libs.junit5Engine)
+    testImplementation("junit:junit:4.13.2")
 }
 
 sourceSets {
