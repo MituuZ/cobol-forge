@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.mituuz.cobolforge.psi.CobolTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.mituuz.cobolforge.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class CobolCopyStatementImpl extends ASTWrapperPsiElement implements CobolCopyStatement {
 
@@ -30,6 +31,11 @@ public class CobolCopyStatementImpl extends ASTWrapperPsiElement implements Cobo
   @Override
   public @Nullable PsiElement getIdentifier() {
     return CobolPsiImplUtil.getIdentifier(this);
+  }
+
+  @Override
+  public @Nullable PsiReference getReference() {
+    return CobolPsiImplUtil.getReference(this);
   }
 
 }

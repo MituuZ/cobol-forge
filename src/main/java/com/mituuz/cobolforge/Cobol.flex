@@ -23,23 +23,33 @@ IDENTIFIER=[a-zA-Z\-äÄöÖåÅ0-9]+
 COPY = [cC][oO][pP][yY]
 
 %state WAITING_IDENTIFIER
+%state WAITING_DOT
 
 %%
 
 <YYINITIAL> {COPY} {
-    yybegin(WAITING_IDENTIFIER); return CobolTypes.COPY;
+    yybegin(WAITING_IDENTIFIER);
+    return CobolTypes.COPY;
 }
 
 <WAITING_IDENTIFIER> {IDENTIFIER} {
+    yybegin(WAITING_DOT);
     return CobolTypes.IDENTIFIER;
 }
 
-<WAITING_IDENTIFIER> "." {
-    yybegin(YYINITIAL); return CobolTypes.DOT;
+<WAITING_DOT> "." {
+    yybegin(YYINITIAL);
+    return CobolTypes.DOT;
+}
+
+<WAITING_DOT> [^.]+ {
+    // Consume everything up to (but not including) the dot in one go
+    return TokenType.WHITE_SPACE;
 }
 
 <YYINITIAL> "." {
-    yybegin(YYINITIAL); return CobolTypes.DOT;
+    yybegin(YYINITIAL);
+    return CobolTypes.DOT;
 }
 
 <WAITING_IDENTIFIER> {WHITE_SPACE}+ {
@@ -51,8 +61,16 @@ COPY = [cC][oO][pP][yY]
     return TokenType.WHITE_SPACE;
 }
 
-<YYINITIAL> {WHITE_SPACE}* {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return CobolTypes.COMMENT; }
+<YYINITIAL> {WHITE_SPACE}* {END_OF_LINE_COMMENT} {
+  yybegin(YYINITIAL);
+  return CobolTypes.COMMENT;
+}
 
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+({CRLF}|{WHITE_SPACE})+ {
+  yybegin(YYINITIAL);
+  return TokenType.WHITE_SPACE;
+}
 
-[^]                                                         { return TokenType.WHITE_SPACE; }
+[^] {
+  return TokenType.WHITE_SPACE;
+}

@@ -4,7 +4,7 @@ import com.intellij.testFramework.ParsingTestCase;
 
 public class CobolParsingTest extends ParsingTestCase {
     public CobolParsingTest() {
-        super("", "cbl", new CobolParserDefinition());
+        super("parsingTestData", "cbl", new CobolParserDefinition());
     }
 
     public void testParsingTestData() {
@@ -13,7 +13,7 @@ public class CobolParsingTest extends ParsingTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/testData";
+        return "src/test/resources";
     }
 
     @Override

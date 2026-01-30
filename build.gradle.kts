@@ -2,7 +2,7 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val currentVersion = "0.2.0"
+val currentVersion = "0.3.0"
 val myGroup = "com.mituuz.cobol-forge"
 version = currentVersion
 group = myGroup
@@ -17,16 +17,14 @@ intellijPlatform {
         changeNotes = """
             <h3>Version $currentVersion</h3>
             <ul>
-              <li>Removed hover info; COPY file preview is now shown via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).</li>
-              <li>Automatically treats all files under a directory named <code>COBOL</code> (case-insensitively) as COBOL file type.</li>
-              <li>Automatically treats these extensions as COBOL files: <code>.cbl</code>, <code>.cob</code>, <code>.cpy</code>, <code>.cobol</code>.</li>
-              <li>Parses <code>COPY</code> case-insensitively.</li>
+              <li>Implement go-to-definition for COPY statements.</li>
+              <li>Searches files in the same way as the quick documentation feature.</li>
             </ul>
         """.trimIndent()
 
         description = """
             A small COBOL language plugin for IntelliJ.
-            Provides COPY previews via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).
+            Provides COPY previews via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim) and go-to-definition for COPY files.
         """.trimIndent()
 
         ideaVersion {
@@ -58,6 +56,7 @@ dependencies {
 
     testImplementation(libs.junit5Api)
     testImplementation(libs.junit5Engine)
+    testImplementation(libs.junit4)
 }
 
 sourceSets {

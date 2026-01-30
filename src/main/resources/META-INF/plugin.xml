@@ -26,9 +26,8 @@
                 language="COBOL"
                 implementationClass="com.mituuz.cobolforge.CobolParserDefinition"/>
 
-        <lang.documentationProvider
-                language="COBOL"
-                implementationClass="com.mituuz.cobolforge.CobolCopyDocumentationProvider"/>
+        <platform.backend.documentation.targetProvider
+                implementation="com.mituuz.cobolforge.docs.CobolCopyDocumentationTargetProvider"/>
 
         <lang.syntaxHighlighterFactory
                 language="COBOL"
