@@ -23,6 +23,7 @@ IDENTIFIER=[a-zA-Z\-äÄöÖåÅ0-9]+
 COPY = [cC][oO][pP][yY]
 
 %state WAITING_IDENTIFIER
+%state WAITING_DOT
 
 %%
 
@@ -31,10 +32,10 @@ COPY = [cC][oO][pP][yY]
 }
 
 <WAITING_IDENTIFIER> {IDENTIFIER} {
-    return CobolTypes.IDENTIFIER;
+    yybegin(WAITING_DOT); return CobolTypes.IDENTIFIER;
 }
 
-<WAITING_IDENTIFIER> "." {
+<WAITING_DOT> "." {
     yybegin(YYINITIAL); return CobolTypes.DOT;
 }
 
