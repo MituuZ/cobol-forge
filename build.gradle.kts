@@ -24,7 +24,7 @@ intellijPlatform {
 
         description = """
             A small COBOL language plugin for IntelliJ.
-            Provides COPY previews via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim).
+            Provides COPY previews via Quick Documentation (Ctrl+Q / Shift+K with IdeaVim) and go-to-definition for COPY files.
         """.trimIndent()
 
         ideaVersion {
