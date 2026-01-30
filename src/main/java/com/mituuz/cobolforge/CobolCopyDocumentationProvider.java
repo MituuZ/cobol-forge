@@ -70,24 +70,25 @@ public class CobolCopyDocumentationProvider extends AbstractDocumentationProvide
 
         if (files.isEmpty()) {
             return "<html><body>File not found: " + StringUtil.escapeXmlEntities(filename) + "</body></html>";
-        }
+        } else if (files.size() > 1) {
+            return "<html><body>Multiple files found for copybook: " + StringUtil.escapeXmlEntities(filename) + "</body></html>";
+        } else {
+            final StringBuilder sb = new StringBuilder("<html><body>");
+            final VirtualFile virtualFile = files.getFirst();
 
-        StringBuilder sb = new StringBuilder("<html><body>");
-        for (VirtualFile file : files) {
             String content;
             try {
-                content = new String(file.contentsToByteArray(), file.getCharset());
+                content = new String(virtualFile.contentsToByteArray(), virtualFile.getCharset());
             } catch (IOException e) {
                 content = "Error reading file: " + e.getMessage();
             }
-            sb.append("<h3>").append(StringUtil.escapeXmlEntities(file.getPath())).append("</h3>");
+
+            sb.append("<h3>").append(StringUtil.escapeXmlEntities(virtualFile.getPath())).append("</h3>");
             sb.append("<pre>").append(StringUtil.escapeXmlEntities(content)).append("</pre>");
-            if (files.size() > 1) {
-                sb.append("<hr/>");
-            }
+
+            sb.append("</body></html>");
+            return sb.toString();
         }
-        sb.append("</body></html>");
-        return sb.toString();
     }
 
     private static boolean isCopyToken(@NotNull PsiElement element) {
