@@ -5,9 +5,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,11 +22,7 @@ public final class CobolCopyResolver {
 
         final List<VirtualFile> foundFiles = new java.util.ArrayList<>();
         for (final String extension : FILE_EXTENSIONS) {
-            final Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(
-                    filename + extension,
-                    false,
-                    GlobalSearchScope.allScope(project)
-            );
+            final Collection<VirtualFile> files = FilenameIndex.getVirtualFilesByName(filename + extension, false, GlobalSearchScope.allScope(project));
             foundFiles.addAll(files);
         }
 
